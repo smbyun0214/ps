@@ -10,14 +10,14 @@ int cache[201][201];
 
 int disjointingSum(int step, int remainder) {
     if (remainder == 0) return 1;
-    if (step == 0) return 0;
+    if (step == 0 || remainder < 0) return 0;
     
     int &ret = cache[step][remainder];
     if (ret != -1) return ret;
     
     ret = 0;
     for (int num = 0; num <= N; ++num) {
-        ret = (ret + (disjointingSum(step - 1, remainder - num)) % MOD ) % MOD;
+        ret = (ret + disjointingSum(step - 1, remainder - num)) % MOD;
     }
     
     return ret;
