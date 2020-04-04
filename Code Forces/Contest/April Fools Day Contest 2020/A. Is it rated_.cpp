@@ -1,3 +1,4 @@
+//https://codeforces.com/contest/1331/problem/A
 #include <iostream>
 
 using namespace std;
@@ -6,13 +7,11 @@ int main(int argc, const char * argv[]) {
     cin.tie(NULL);
     ios::sync_with_stdio(false);
     
-    int w;
-    cin >> w;
+    char rated;
     
-    if (w % 2 == 0 && w > 3)
-        cout << "YES" << '\n';
-    else
-        cout << "NO" << '\n';
+    cin >> rated;
+    
+    cout << ('A' <= rated && rated << 'Z') << '\n';
     
     return 0;
 }
