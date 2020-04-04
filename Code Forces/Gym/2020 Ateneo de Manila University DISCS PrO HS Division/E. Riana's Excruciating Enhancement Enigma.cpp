@@ -1,5 +1,5 @@
+//https://codeforces.com/gym/102556/problem/E
 #include <iostream>
-#include <fstream>
 
 using namespace std;
 
@@ -7,7 +7,11 @@ int main(int argc, const char * argv[]) {
     cin.tie(NULL);
     ios::sync_with_stdio(false);
     
-    ifstream cin("");
+    unsigned long long Might;
+    
+    cin >> Might;
+    
+    cout << Might << '\n';
     
     return 0;
 }
