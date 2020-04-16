@@ -9,32 +9,27 @@ const int INF = 1987654321;
 int n;
 
 int dist[16][16];
+int cache[65536][16];
 
-int shortestPath(vector<int>& path, vector<bool>& visited, int currentLength) {
-    if (path.size() == n) {
-        if (dist[path.back()][path.front()])
-            return currentLength + dist[path.back()][path.front()];
+int shortestPath(int here, int visited) {
+    if (visited == ((1 << n) - 1)) {
+        if (dist[here][0])
+            return dist[here][0];
         
         return INF;
     }
     
-    int ret = INF;
-    
+    int &ret = cache[visited][here];
+    if (ret != -1)
+        return ret;
+
+    ret = INF;
+
     for (int next = 0; next < n; ++next) {
-        if (visited[next]) continue;
+        if (visited & (1 << next) || dist[here][next] == 0)
+            continue;
         
-        int here = path.back();
-        
-        if (dist[here][next]) {
-            path.push_back(next);
-            visited[next] = true;
-            
-            int cand = shortestPath(path, visited, currentLength + dist[here][next]);
-            ret = min(ret, cand);
-            
-            visited[next] = false;
-            path.pop_back();
-        }
+        ret = min(ret, dist[here][next] + shortestPath(next, visited | (1 << next)));
     }
     
     return ret;
@@ -45,6 +40,7 @@ int main(int argc, const char * argv[]) {
     ios::sync_with_stdio(false);
     
     memset(dist, 0, sizeof(dist));
+    memset(cache, -1, sizeof(cache));
     
     cin >> n;
     
@@ -54,12 +50,7 @@ int main(int argc, const char * argv[]) {
         }
     }
     
-    vector<int> path;
-    vector<bool> visited(n, false);
-    
-    path.push_back(0);
-    visited[0] = true;
-    cout << shortestPath(path, visited, 0) << '\n';
+    cout << shortestPath(0, 1 << 0) << '\n';
     
     return 0;
 }
