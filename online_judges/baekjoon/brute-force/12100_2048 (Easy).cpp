@@ -6,8 +6,8 @@
 using namespace std;
 
 int size;
-int cache[21][21];
-int board[6][21][21];
+int cache[20][20];
+int board[6][20][20];
 
 void _left2RightMove(int step) {
     memset(cache, -1, sizeof(cache));
@@ -86,127 +86,117 @@ void move(int step, int direction) {
         throw;
 }
 
-int _left2RightAdd(int step) {
-    int ret = 0;
+void _left2RightAdd(int step) {
     for (int i = 0; i < size; ++i) {
-        int j = 0;
-        while (j < size) {
-            int& a = board[step][i][size - 1 - j];
-            int& b = board[step][i][size - 1 - (j + 1)];
-            
+        int right = size - 1;
+        while (0 <= (right - 1)) {
+            int& a = board[step][i][right];
+            int& b = board[step][i][right - 1];
+
             if (a == 0 || b == 0 || a != b) {
-                ret = max(ret, max(a, b));
-                ++j;
+                --right;
             }
             else {
                 a += b;
                 b = 0;
-                ret = max(ret, a);
-                j += 2;
+                right -= 2;
             }
         }
     }
-    return ret;
 }
 
-int _right2LeftAdd(int step) {
-    int ret = 0;
+void _right2LeftAdd(int step) {
     for (int i = 0; i < size; ++i) {
-        int j = 0;
-        while (j < size) {
-            int& a = board[step][i][j];
-            int& b = board[step][i][j + 1];
-            
+        int left = 0;
+        while ((left + 1) < size) {
+            int& a = board[step][i][left];
+            int& b = board[step][i][left + 1];
+
             if (a == 0 || b == 0 || a != b) {
-                ret = max(ret, max(a, b));
-                ++j;
+                ++left;
             }
             else {
                 a += b;
                 b = 0;
-                ret = max(ret, a);
-                j += 2;
+                left += 2;
             }
         }
     }
-    return ret;
 }
 
-int _down2UpAdd(int step) {
-    int ret = 0;
+void _down2UpAdd(int step) {
     for (int j = 0; j < size; ++j) {
-        int i = 0;
-        while (i < size) {
-            int& a = board[step][i][j];
-            int& b = board[step][i + 1][j];
-            
+        int up = 0;
+        while ((up + 1) < size) {
+            int& a = board[step][up][j];
+            int& b = board[step][up + 1][j];
+
             if (a == 0 || b == 0 || a != b) {
-                ret = max(ret, max(a, b));
-                ++i;
+                ++up;
             }
             else {
                 a += b;
                 b = 0;
-                ret = max(ret, a);
-                i += 2;
+                up += 2;
             }
         }
     }
-    return ret;
 }
 
-int _up2DownAdd(int step) {
-    int ret = 0;
+void _up2DownAdd(int step) {
     for (int j = 0; j < size; ++j) {
-        int i = 0;
-        while (i < size) {
-            int& a = board[step][size - 1 - i][j];
-            int& b = board[step][size - 1 - (i + 1)][j];
-            
+        int down = size - 1;
+        while (0 <= (down - 1)) {
+            int& a = board[step][down][j];
+            int& b = board[step][down - 1][j];
+
             if (a == 0 || b == 0 || a != b) {
-                ret = max(ret, max(a, b));
-                ++i;
+                --down;
             }
             else {
                 a += b;
                 b = 0;
-                ret = max(ret, a);
-                i += 2;
+                down -= 2;
             }
         }
     }
-    return ret;
 }
 
-int add(int step, int direction) {
+void add(int step, int direction) {
     if (direction == 0)
-        return _down2UpAdd(step);
+        _down2UpAdd(step);
     else if (direction == 1)
-        return _left2RightAdd(step);
+        _left2RightAdd(step);
     else if (direction == 2)
-        return _up2DownAdd(step);
+        _up2DownAdd(step);
     else if (direction == 3)
-        return _right2LeftAdd(step);
+        _right2LeftAdd(step);
     else
         throw;
 }
 
-int step(int from, int to, int direction) {
+void step(int from, int to, int direction) {
     memcpy(board[to], board[from], sizeof(board[from]));
     move(to, direction);
-    int ret = add(to, direction);
+    add(to, direction);
     move(to, direction);
-    return ret;
 }
 
 int solution(int from, int toPick) {
-    if (toPick == 0)
-        return 0;
+    if (toPick == 0) {
+        int ret = 0;
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                ret = max(ret, board[from][i][j]);
+            }
+        }
+        return ret;
+    }
     
     int ret = 0;
     
     for (int direction = 0; direction < 4; ++direction) {
-        ret = max(ret, step(from, from + 1, direction));
+        step(from, from + 1, direction);
         ret = max(ret, solution(from + 1, toPick - 1));
     }
     
