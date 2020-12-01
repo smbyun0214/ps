@@ -1,6 +1,8 @@
-algorithms
-**/TODO/
-tasks/
-in
-out
-expected
+.DS_Store
+.ipynb_checkpoints/*
+
+**/TODO/*
+
+algorithms/*
+tasks/*
+samples/*
