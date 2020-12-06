@@ -13,7 +13,7 @@ using namespace std;
 
 int main (int argc, char *argv[]) {
     
-    cout_precision(2);
+    cout.precision(2);
     cout << fixed << 0.00;
     
     return 0;
