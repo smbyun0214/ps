@@ -19,7 +19,7 @@
             "preLaunchTask": "build",
             "setupCommands": [
                 {
-                    "text": "settings set target.input-path ${workspaceFolder}/in"
+                    "text": "settings set target.input-path ${workspaceFolder}/samples/in"
                 }
             ]
         }

@@ -25,7 +25,6 @@
             "type": "cppbuild",
             "command": "/usr/bin/g++",
             "args": [
-                "-g",
                 "-std=c++11",
                 "${file}",
                 "-o",
@@ -33,9 +32,9 @@
                 "&&",
                 "${workspaceFolder}/tasks/${fileBasenameNoExtension}",
                 "<",
-                "${workspaceFolder}/in",
+                "${workspaceFolder}/samples/in",
                 ">",
-                "${workspaceFolder}/out"
+                "${workspaceFolder}/samples/out"
             ],
             "options": {
                 "cwd": "/usr/bin"
