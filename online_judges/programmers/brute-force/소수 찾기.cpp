@@ -48,9 +48,5 @@ int solution(string numbers) {
     string subNumber = "";
     vector<bool> isUsed(numbers.size(), false);
     
-    for (int i = 0; i < numbers.size(); ++i) {
-        ret += recursiveCnt(subNumber, isUsed, numbers);
-    }
-    
-    return ret;
+    return recursiveCnt(subNumber, isUsed, numbers);
 }
